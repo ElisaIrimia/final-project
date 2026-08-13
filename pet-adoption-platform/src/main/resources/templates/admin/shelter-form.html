@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shelter Form - AdoptiHub</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+<header class="topbar"><a class="brand" th:href="@{/dashboard}">AdoptiHub Admin</a></header>
+<main class="container">
+    <section class="card">
+        <h1>Shelter</h1>
+        <form class="stack" th:action="@{/admin/shelters}" th:object="${shelter}" method="post">
+            <label>Name <input th:field="*{name}" required></label>
+            <label>City <input th:field="*{city}" required></label>
+            <label>Contact email <input th:field="*{contactEmail}" type="email" required></label>
+            <button>Save shelter</button>
+        </form>
+    </section>
+</main>
+</body>
+</html>
