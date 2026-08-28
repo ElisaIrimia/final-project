@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${pet.name} + ' - AdoptiHub'">Pet</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+<header class="topbar"><a class="brand" th:href="@{/}">AdoptiHub</a><nav class="nav"><a th:href="@{/pets}">Pets</a><a sec:authorize="isAuthenticated()" th:href="@{/dashboard}">Dashboard</a><a sec:authorize="isAnonymous()" th:href="@{/login}">Login</a></nav></header>
+<main class="container">
+    <div class="alert success" th:if="${success}" th:text="${success}"></div>
+    <div class="alert error" th:if="${error}" th:text="${error}"></div>
+    <section class="card">
+        <img class="pet-detail-image" th:if="${not #strings.isEmpty(pet.imageUrl)}" th:src="${pet.imageUrl}" th:alt="${pet.name}">
+        <div class="pet-detail-image pet-image-placeholder" th:unless="${not #strings.isEmpty(pet.imageUrl)}">No image yet</div>
+        <span class="badge" th:classappend="' status-' + ${pet.status}" th:text="${pet.status}"></span>
+        <h1 th:text="${pet.name}">Pet</h1>
+        <p class="muted" th:text="${pet.species + ' / ' + pet.breed + ' / ' + pet.age + ' years'}"></p>
+        <p th:text="${pet.story}"></p>
+        <p><strong>Shelter:</strong> <span th:text="${pet.shelter.name + ', ' + pet.shelter.city}"></span></p>
+    </section>
+    <section class="card" style="margin-top:18px" sec:authorize="isAuthenticated()">
+        <h2>Apply for adoption</h2>
+        <form class="stack" th:action="@{/pets/{id}/apply(id=${pet.id})}" method="post">
+            <label>Your motivation <textarea name="motivation" required minlength="20" maxlength="1200"></textarea></label>
+            <button>Submit application</button>
+        </form>
+    </section>
+    <p sec:authorize="isAnonymous()"><a class="btn" th:href="@{/login}">Login to apply</a></p>
+</main>
+</body>
+</html>

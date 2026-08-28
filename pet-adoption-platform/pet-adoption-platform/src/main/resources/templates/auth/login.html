@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - AdoptiHub</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+<header class="topbar"><a class="brand" th:href="@{/}">AdoptiHub</a><nav class="nav"><a th:href="@{/pets}">Pets</a><a th:href="@{/register}">Register</a></nav></header>
+<main class="container">
+    <section class="card">
+        <h1>Login</h1>
+        <div class="alert success" th:if="${success}" th:text="${success}"></div>
+        <div class="alert error" th:if="${param.error}">Invalid username or password.</div>
+        <form class="stack" th:action="@{/login}" method="post">
+            <label>Username <input name="username" required></label>
+            <label>Password <input name="password" type="password" required></label>
+            <button>Login</button>
+        </form>
+        <p class="muted">Demo admin: admin / admin123. Demo user: elisa / user123.</p>
+    </section>
+</main>
+</body>
+</html>

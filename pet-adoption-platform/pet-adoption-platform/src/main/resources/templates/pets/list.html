@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pets - AdoptiHub</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+<header class="topbar"><a class="brand" th:href="@{/}">AdoptiHub</a><nav class="nav"><a th:href="@{/pets}">Pets</a><a sec:authorize="isAuthenticated()" th:href="@{/dashboard}">Dashboard</a><a sec:authorize="isAnonymous()" th:href="@{/login}">Login</a></nav></header>
+<main class="container">
+    <h1>Adoption catalog</h1>
+    <form class="filter" th:action="@{/pets}" method="get">
+        <label>Search <input name="q" th:value="${q}" placeholder="name, species or breed"></label>
+        <label>Status
+            <select name="status">
+                <option value="">All</option>
+                <option th:each="status : ${statuses}" th:value="${status}" th:text="${status}"></option>
+            </select>
+        </label>
+        <button>Filter</button>
+    </form>
+    <div class="grid">
+        <article class="card" th:each="pet : ${pets}">
+            <img class="pet-image" th:if="${not #strings.isEmpty(pet.imageUrl)}" th:src="${pet.imageUrl}" th:alt="${pet.name}">
+            <div class="pet-image pet-image-placeholder" th:unless="${not #strings.isEmpty(pet.imageUrl)}">No image yet</div>
+            <span class="badge" th:classappend="' status-' + ${pet.status}" th:text="${pet.status}"></span>
+            <h3 th:text="${pet.name}">Pet</h3>
+            <p class="muted" th:text="${pet.species + ' / ' + pet.breed}"></p>
+            <p th:text="${pet.story}"></p>
+            <a class="btn secondary" th:href="@{/pets/{id}(id=${pet.id})}">Open profile</a>
+        </article>
+    </div>
+</main>
+</body>
+</html>
