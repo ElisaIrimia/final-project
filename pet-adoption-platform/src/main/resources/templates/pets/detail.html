@@ -12,6 +12,8 @@
     <div class="alert success" th:if="${success}" th:text="${success}"></div>
     <div class="alert error" th:if="${error}" th:text="${error}"></div>
     <section class="card">
+        <img class="pet-detail-image" th:if="${not #strings.isEmpty(pet.imageUrl)}" th:src="${pet.imageUrl}" th:alt="${pet.name}">
+        <div class="pet-detail-image pet-image-placeholder" th:unless="${not #strings.isEmpty(pet.imageUrl)}">No image yet</div>
         <span class="badge" th:classappend="' status-' + ${pet.status}" th:text="${pet.status}"></span>
         <h1 th:text="${pet.name}">Pet</h1>
         <p class="muted" th:text="${pet.species + ' / ' + pet.breed + ' / ' + pet.age + ' years'}"></p>

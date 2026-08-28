@@ -49,6 +49,10 @@ public class Pet {
     @Column(nullable = false, length = 1000)
     private String story;
 
+    @Size(max = 1000)
+    @Column(length = 1000)
+    private String imageUrl;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private PetStatus status = PetStatus.AVAILABLE;
@@ -107,6 +111,14 @@ public class Pet {
 
     public void setStory(String story) {
         this.story = story;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public PetStatus getStatus() {

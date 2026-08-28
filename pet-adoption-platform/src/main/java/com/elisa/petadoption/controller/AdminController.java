@@ -4,6 +4,7 @@ import com.elisa.petadoption.entity.Pet;
 import com.elisa.petadoption.entity.PetStatus;
 import com.elisa.petadoption.entity.Shelter;
 import com.elisa.petadoption.service.PetService;
+import com.elisa.petadoption.service.PetImageStorageService;
 import com.elisa.petadoption.service.ShelterService;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
@@ -13,15 +14,21 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @Controller
 public class AdminController {
     private final PetService petService;
     private final ShelterService shelterService;
+    private final PetImageStorageService petImageStorageService;
 
-    public AdminController(PetService petService, ShelterService shelterService) {
+    public AdminController(PetService petService, ShelterService shelterService, PetImageStorageService petImageStorageService) {
         this.petService = petService;
         this.shelterService = shelterService;
+        this.petImageStorageService = petImageStorageService;
     }
 
     @GetMapping("/admin/pets/new")
@@ -39,7 +46,14 @@ public class AdminController {
     }
 
     @PostMapping("/admin/pets")
-    public String savePet(@Valid @ModelAttribute Pet pet, BindingResult bindingResult, Model model) {
+    public String savePet(@Valid @ModelAttribute Pet pet, BindingResult bindingResult, @RequestParam(required = false) MultipartFile imageFile, Model model) {
+        if (imageFile != null && !imageFile.isEmpty()) {
+            try {
+                pet.setImageUrl(petImageStorageService.store(imageFile));
+            } catch (IllegalArgumentException | IOException exception) {
+                bindingResult.rejectValue("imageUrl", "image.invalid", exception.getMessage());
+            }
+        }
         if (bindingResult.hasErrors()) {
             addPetFormData(model);
             return "admin/pet-form";

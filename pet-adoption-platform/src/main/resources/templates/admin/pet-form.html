@@ -11,7 +11,7 @@
 <main class="container">
     <section class="card">
         <h1>Pet profile</h1>
-        <form class="stack" th:action="@{/admin/pets}" th:object="${pet}" method="post">
+        <form class="stack" th:action="@{/admin/pets}" th:object="${pet}" method="post" enctype="multipart/form-data">
             <input type="hidden" th:field="*{id}">
             <label>Name <input th:field="*{name}" required></label>
             <label>Species <input th:field="*{species}" required></label>
@@ -20,6 +20,9 @@
             <label>Status <select th:field="*{status}"><option th:each="status : ${statuses}" th:value="${status}" th:text="${status}"></option></select></label>
             <label>Shelter <select th:field="*{shelter}"><option th:each="shelter : ${shelters}" th:value="${shelter.id}" th:text="${shelter.name}"></option></select></label>
             <label>Story <textarea th:field="*{story}" required></textarea></label>
+            <label>Image URL <input type="url" th:field="*{imageUrl}" placeholder="https://example.com/pet.jpg"></label>
+            <label>Or upload an image <input type="file" name="imageFile" accept="image/jpeg,image/png,image/webp"></label>
+            <p class="muted">JPG, PNG, or WebP, maximum 5 MB. An uploaded file replaces the image URL.</p>
             <button>Save pet</button>
         </form>
     </section>
