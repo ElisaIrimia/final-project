@@ -1,3 +1,0 @@
-2026-08-27 19:41:31.670091+03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PET" not found (this database is empty); SQL statement:
-SELECT COUNT(*) AS PETS FROM PET [42104-224]
